@@ -1,0 +1,82 @@
+{
+  "repos": [
+    {
+      "name": "CodeGator",
+      "url": "https://github.com/CodeGator/CodeGator.git",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.Reflection",
+      "url": "https://github.com/CodeGator/CodeGator.Reflection",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.Exceptions",
+      "url": "https://github.com/CodeGator/CodeGator.Exceptions",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.DataAnnotations",
+      "url": "https://github.com/CodeGator/CodeGator.DataAnnotations",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.Configuration",
+      "url": "https://github.com/CodeGator/CodeGator.Configuration",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.Cryptography",
+      "url": "https://github.com/CodeGator/CodeGator.Cryptography",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.DependencyInjection",
+      "url": "https://github.com/CodeGator/CodeGator.DependencyInjection",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.Hosting",
+      "url": "https://github.com/CodeGator/CodeGator.Hosting",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.Logging",
+      "url": "https://github.com/CodeGator/CodeGator.Logging",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.Passwords",
+      "url": "https://github.com/CodeGator/CodeGator.Passwords",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.Templates",
+      "url": "https://github.com/CodeGator/CodeGator.Templates",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.Validations",
+      "url": "https://github.com/CodeGator/CodeGator.Validations",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    },
+    {
+      "name": "CodeGator.Email",
+      "url": "https://github.com/CodeGator/CodeGator.Email",
+      "branch": "main",
+      "analysisProjectRelativePath": ""
+    }
+  ]
+}

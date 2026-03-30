@@ -1,0 +1,78 @@
+<Window x:Class="NuGetImpactAnalyzer.Views.EditRepositoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="{Binding DialogTitle}"
+        Height="400" Width="560"
+        MinHeight="360" MinWidth="440"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#F4F4F6">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="16"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="12"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="URL" VerticalAlignment="Center" FontSize="13"/>
+        <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" Padding="6,4" FontSize="13"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Name" VerticalAlignment="Center" FontSize="13"/>
+        <TextBox Grid.Row="2" Grid.Column="2"
+                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                 IsReadOnly="{Binding IsNameReadOnly}"
+                 Padding="6,4" FontSize="13"
+                 ToolTip="When adding, this is derived from the URL. Use Edit to change the display name."/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Branch" VerticalAlignment="Center" FontSize="13"/>
+        <Grid Grid.Row="4" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox Grid.Column="0"
+                      ItemsSource="{Binding BranchOptions}"
+                      SelectedItem="{Binding Branch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Padding="6,4" FontSize="13" IsEditable="False"/>
+            <Button Grid.Column="1" Content="Refresh" Margin="10,0,0,0" Padding="12,4" VerticalAlignment="Center"
+                    Command="{Binding RefreshListsCommand}"
+                    ToolTip="Reload branch and .csproj lists (uses local clone if present, otherwise lists remote branches)."/>
+        </Grid>
+
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Analysis root" VerticalAlignment="Center" FontSize="13"
+                   ToolTip="Limit dependency analysis to this project and its references. Choose 'All projects' for the full solution."/>
+        <ComboBox Grid.Row="6" Grid.Column="2"
+                  ItemsSource="{Binding ProjectScopeOptions}"
+                  DisplayMemberPath="Caption"
+                  SelectedValuePath="Path"
+                  SelectedValue="{Binding AnalysisProjectRelativePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Padding="6,4" FontSize="13" IsEditable="False"/>
+
+        <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3"
+                Content="Manage credentials…"
+                Command="{Binding ManageCredentialsCommand}"
+                HorizontalAlignment="Left"
+                Padding="12,6"/>
+
+        <StackPanel Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="OK" IsDefault="True" Padding="16,8" Margin="0,0,8,0" Command="{Binding ConfirmCommand}"/>
+            <Button Content="Cancel" IsCancel="True" Padding="16,8"/>
+        </StackPanel>
+    </Grid>
+</Window>

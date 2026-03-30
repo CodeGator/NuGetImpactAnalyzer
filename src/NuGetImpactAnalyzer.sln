@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11619.145
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetImpactAnalyzer", "NuGetImpactAnalyzer\NuGetImpactAnalyzer.csproj", "{617C9262-18EC-CC9E-F648-F37248B4FB9C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4107F75E-230D-4697-8FD3-9EDE16CD36D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetImpactAnalyzer.Tests", "..\tests\NuGetImpactAnalyzer.Tests\NuGetImpactAnalyzer.Tests.csproj", "{1948D4C8-D310-0399-2C2E-9AB3D042EE7E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{617C9262-18EC-CC9E-F648-F37248B4FB9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{617C9262-18EC-CC9E-F648-F37248B4FB9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{617C9262-18EC-CC9E-F648-F37248B4FB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{617C9262-18EC-CC9E-F648-F37248B4FB9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1948D4C8-D310-0399-2C2E-9AB3D042EE7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1948D4C8-D310-0399-2C2E-9AB3D042EE7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1948D4C8-D310-0399-2C2E-9AB3D042EE7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1948D4C8-D310-0399-2C2E-9AB3D042EE7E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1948D4C8-D310-0399-2C2E-9AB3D042EE7E} = {4107F75E-230D-4697-8FD3-9EDE16CD36D7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {55E0B10E-7AB4-4C0B-99D0-E09A9EA5A7C6}
+	EndGlobalSection
+EndGlobal
