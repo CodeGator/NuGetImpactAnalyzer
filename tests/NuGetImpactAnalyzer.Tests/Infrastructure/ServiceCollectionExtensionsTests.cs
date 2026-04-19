@@ -18,8 +18,10 @@ public sealed class ServiceCollectionExtensionsTests
 
         var crypto = provider.GetRequiredService<IMasterPasswordCrypto>();
         var masterFileStore = provider.GetRequiredService<IMasterPasswordFileStore>();
+        var vaultReset = provider.GetRequiredService<IVaultSecretsResetService>();
         Assert.IsType<MasterPasswordCrypto>(crypto);
         Assert.IsType<MasterPasswordFileStore>(masterFileStore);
+        Assert.IsType<VaultSecretsResetService>(vaultReset);
 
         var config = provider.GetRequiredService<IAppConfigurationService>();
         var git = provider.GetRequiredService<IGitService>();

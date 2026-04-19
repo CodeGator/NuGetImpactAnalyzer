@@ -1,6 +1,7 @@
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using NuGetImpactAnalyzer.Infrastructure;
 using NuGetImpactAnalyzer.Services.Abstractions;
 
 namespace NuGetImpactAnalyzer.ViewModels;
@@ -8,6 +9,7 @@ namespace NuGetImpactAnalyzer.ViewModels;
 public sealed partial class LoginViewModel : ObservableObject
 {
     private readonly IMasterPasswordService _master;
+    private readonly IVaultSecretsResetService _vaultReset;
 
     [ObservableProperty]
     private string _password = string.Empty;
@@ -21,9 +23,10 @@ public sealed partial class LoginViewModel : ObservableObject
     [ObservableProperty]
     private bool _showPassword;
 
-    public LoginViewModel(IMasterPasswordService master)
+    public LoginViewModel(IMasterPasswordService master, IVaultSecretsResetService vaultSecretsReset)
     {
         _master = master;
+        _vaultReset = vaultSecretsReset;
     }
 
     public bool IsSetupMode => !_master.HasMasterPassword;
@@ -71,5 +74,40 @@ public sealed partial class LoginViewModel : ObservableObject
 
         window.DialogResult = false;
         window.Close();
+    }
+
+    [RelayCommand]
+    private void ForgotMasterPassword(Window? window)
+    {
+        if (window is null || IsSetupMode)
+        {
+            return;
+        }
+
+        const string message =
+            "This removes your master password record and all stored GitHub personal access tokens from this computer. "
+            + "You cannot recover those tokens here. Your repository list, preferences, analysis cache, and cloned repos are not deleted.\n\n"
+            + "Continue?";
+
+        if (CenteredMessageBox.Show(
+                window,
+                message,
+                "Reset vault",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        if (!_vaultReset.TryResetAfterForgottenMasterPassword(out var err))
+        {
+            ErrorMessage = err ?? "Vault reset failed.";
+            return;
+        }
+
+        Password = string.Empty;
+        ConfirmPassword = string.Empty;
+        ErrorMessage = null;
+        OnPropertyChanged(nameof(IsSetupMode));
     }
 }

@@ -60,6 +60,15 @@ public sealed class TokenStorageIndex
         }
     }
 
+    public void ClearAll()
+    {
+        lock (_gate)
+        {
+            _repos.Clear();
+            Persist();
+        }
+    }
+
     private void Load()
     {
         if (!File.Exists(_path))

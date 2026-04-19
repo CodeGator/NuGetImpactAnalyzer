@@ -37,15 +37,36 @@ public partial class LoginWindow : Window
 
     private void LoginViewModel_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (sender is not LoginViewModel vm || e.PropertyName != nameof(LoginViewModel.ShowPassword))
+        if (sender is not LoginViewModel vm)
         {
             return;
         }
 
-        if (!vm.ShowPassword)
+        if (e.PropertyName == nameof(LoginViewModel.ShowPassword))
         {
-            PasswordBoxMain.Password = vm.Password;
-            PasswordBoxConfirm.Password = vm.ConfirmPassword;
+            if (!vm.ShowPassword)
+            {
+                PasswordBoxMain.Password = vm.Password;
+                PasswordBoxConfirm.Password = vm.ConfirmPassword;
+            }
+        }
+        else if (e.PropertyName == nameof(LoginViewModel.Password) && string.IsNullOrEmpty(vm.Password))
+        {
+            if (PasswordBoxMain.Password.Length > 0)
+            {
+                PasswordBoxMain.Password = string.Empty;
+            }
+        }
+        else if (e.PropertyName == nameof(LoginViewModel.ConfirmPassword) && string.IsNullOrEmpty(vm.ConfirmPassword))
+        {
+            if (PasswordBoxConfirm.Password.Length > 0)
+            {
+                PasswordBoxConfirm.Password = string.Empty;
+            }
+        }
+        else if (e.PropertyName == nameof(LoginViewModel.IsSetupMode) && vm.IsSetupMode && IsLoaded)
+        {
+            FocusInitialPasswordField();
         }
     }
 

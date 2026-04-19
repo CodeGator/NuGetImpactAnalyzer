@@ -63,4 +63,25 @@ public sealed class MasterPasswordFileStore : IMasterPasswordFileStore
         var json = JsonSerializer.Serialize(data, JsonOptions);
         File.WriteAllText(_filePath, json);
     }
+
+    /// <inheritdoc />
+    public bool TryDeleteFile(out string? error)
+    {
+        error = null;
+        if (!File.Exists(_filePath))
+        {
+            return true;
+        }
+
+        try
+        {
+            File.Delete(_filePath);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            error = $"Could not delete master password file: {ex.Message}";
+            return false;
+        }
+    }
 }

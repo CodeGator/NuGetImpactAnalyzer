@@ -1,20 +1,21 @@
 <Window x:Class="NuGetImpactAnalyzer.Views.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="NuGet Impact Analyzer — Unlock"
-        Width="460"
-        MinHeight="220" MinWidth="400"
+        Title="NuGet Impact Analyzer"
+        Width="440"
+        MinHeight="420"
+        MinWidth="400"
         SizeToContent="Height"
         WindowStartupLocation="Manual"
         ResizeMode="NoResize"
-        Background="#F4F4F6">
+        Background="#F9F8F3">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <Style x:Key="PasswordRevealIconButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="6,4"/>
-            <Setter Property="Width" Value="34"/>
+            <Setter Property="Width" Value="40"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -25,10 +26,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#E2E2E6"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#F0EFEA"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#D0D0D6"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#E6E4DE"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
@@ -38,176 +39,302 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="PrimaryLoginButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#0D0D0D"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="0,14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                CornerRadius="10" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#2A2A2A"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#000000"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CancelLinkButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#6B6B6B"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <TextBlock Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   TextDecorations="Underline"
+                                   HorizontalAlignment="Center"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="#333333"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Foreground" Value="#1A1A1A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
-    <Grid Margin="20,20,20,14">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="14"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="8"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="8"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="8"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="8"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="6"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                      Padding="28,36,28,28">
+            <StackPanel VerticalAlignment="Center" MaxWidth="384" HorizontalAlignment="Center">
+                <Viewbox Width="44" Height="44" HorizontalAlignment="Center" Margin="0,0,0,20">
+                    <Canvas Width="48" Height="48">
+                        <Path Fill="#C4705E"
+                              Data="M24,4 L27.2,18.5 L42,18.5 L30.4,27.2 L34.8,42 L24,33.6 L13.2,42 L17.6,27.2 L6,18.5 L20.8,18.5 Z"/>
+                    </Canvas>
+                </Viewbox>
 
-        <TextBlock Grid.Row="0" TextWrapping="Wrap" FontSize="13" Foreground="#333"
-                   Text="Enter your master password to unlock local encryption for any stored GitHub PATs. Your password is never sent over the network."/>
-
-        <TextBlock Grid.Row="2" Text="Master password" FontWeight="SemiBold" FontSize="13"/>
-
-        <Grid Grid.Row="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <PasswordBox x:Name="PasswordBoxMain"
-                             Padding="8,6"
-                             FontSize="14"
-                             PasswordChanged="PasswordBoxMain_OnPasswordChanged">
-                    <PasswordBox.Style>
-                        <Style TargetType="PasswordBox">
-                            <Setter Property="Visibility" Value="Visible"/>
+                <TextBlock HorizontalAlignment="Center" TextAlignment="Center" Foreground="#141414"
+                           FontFamily="Cambria, Georgia, Times New Roman, serif" FontSize="30" FontWeight="Normal"
+                           Margin="0,0,0,8">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="Enter password"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ShowPassword}" Value="True">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                <DataTrigger Binding="{Binding IsSetupMode}" Value="True">
+                                    <Setter Property="Text" Value="Create password"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </PasswordBox.Style>
-                </PasswordBox>
-                <TextBox x:Name="PasswordTextMain"
-                         Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                         Padding="8,6"
-                         FontSize="14"
-                         VerticalContentAlignment="Center">
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <TextBlock HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"
+                           FontFamily="Segoe UI, system-ui, sans-serif" FontSize="13.5" Foreground="#6B6B6B"
+                           LineHeight="20" MaxWidth="340" Margin="0,0,0,28">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="Unlock local encryption for stored credentials. Your password never leaves this device."/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSetupMode}" Value="True">
+                                    <Setter Property="Text" Value="Choose a strong password to protect stored GitHub tokens. It is never sent over the network."/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <Border Background="White" BorderBrush="#E4E4DF" BorderThickness="1" CornerRadius="18"
+                        Padding="22,22,22,20">
+                    <StackPanel>
+                        <TextBlock Text="Master password" FontFamily="Segoe UI, system-ui, sans-serif"
+                                   FontSize="12" Foreground="#8A8A8A" Margin="2,0,0,8"/>
+                        <Border Background="White" BorderBrush="#D1D1CC" BorderThickness="1" CornerRadius="10"
+                                ClipToBounds="True" Margin="0,0,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <PasswordBox x:Name="PasswordBoxMain"
+                                             Grid.Column="0"
+                                             Padding="12,10"
+                                             FontSize="14"
+                                             BorderThickness="0"
+                                             Background="Transparent"
+                                             VerticalContentAlignment="Center"
+                                             PasswordChanged="PasswordBoxMain_OnPasswordChanged">
+                                    <PasswordBox.Style>
+                                        <Style TargetType="PasswordBox">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ShowPassword}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </PasswordBox.Style>
+                                </PasswordBox>
+                                <TextBox x:Name="PasswordTextMain"
+                                         Grid.Column="0"
+                                         Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                                         Padding="12,10"
+                                         FontSize="14"
+                                         BorderThickness="0"
+                                         Background="Transparent"
+                                         VerticalContentAlignment="Center">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ShowPassword}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                                <Button Grid.Column="1"
+                                        VerticalAlignment="Stretch"
+                                        Command="{Binding ToggleShowPasswordCommand}"
+                                        AutomationProperties.Name="Toggle password visibility">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource PasswordRevealIconButtonStyle}">
+                                            <Setter Property="ToolTip" Value="Show password"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ShowPassword}" Value="True">
+                                                    <Setter Property="ToolTip" Value="Hide password"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Grid Width="22" Height="22">
+                                        <Grid>
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ShowPassword}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+                                            <Viewbox Stretch="Uniform">
+                                                <Canvas Width="24" Height="24">
+                                                    <Path Stroke="#2D2D2D" StrokeThickness="1.35" StrokeLineJoin="Round"
+                                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent"
+                                                          Data="M12,7 C8,7 4.8,9.4 3.3,12 C4.8,14.6 8,17 12,17 C16,17 19.2,14.6 20.7,12 C19.2,9.4 16,7 12,7 Z"/>
+                                                    <Ellipse Canvas.Left="9" Canvas.Top="9.3" Width="6" Height="6" Fill="#2D2D2D"/>
+                                                </Canvas>
+                                            </Viewbox>
+                                        </Grid>
+                                        <Grid>
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ShowPassword}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+                                            <Viewbox Stretch="Uniform">
+                                                <Canvas Width="24" Height="24">
+                                                    <Path Stroke="#2D2D2D" StrokeThickness="1.35" StrokeLineJoin="Round"
+                                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent"
+                                                          Data="M12,7 C8,7 4.8,9.4 3.3,12 C4.8,14.6 8,17 12,17 C16,17 19.2,14.6 20.7,12 C19.2,9.4 16,7 12,7 Z"/>
+                                                    <Ellipse Canvas.Left="9" Canvas.Top="9.3" Width="6" Height="6" Fill="#2D2D2D"/>
+                                                    <Path Stroke="#2D2D2D" StrokeThickness="1.85" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                                          Data="M5.5,5.5 L18.5,18.5"/>
+                                                </Canvas>
+                                            </Viewbox>
+                                        </Grid>
+                                    </Grid>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <StackPanel Margin="0,18,0,0" Visibility="{Binding IsSetupMode, Converter={StaticResource BoolToVis}}">
+                            <TextBlock Text="Confirm password" FontFamily="Segoe UI, system-ui, sans-serif"
+                                       FontSize="12" Foreground="#8A8A8A" Margin="2,0,0,8"/>
+                            <Border Background="White" BorderBrush="#D1D1CC" BorderThickness="1" CornerRadius="10"
+                                    ClipToBounds="True">
+                                <Grid>
+                                    <PasswordBox x:Name="PasswordBoxConfirm"
+                                                 Padding="12,10"
+                                                 FontSize="14"
+                                                 BorderThickness="0"
+                                                 Background="Transparent"
+                                                 VerticalContentAlignment="Center"
+                                                 PasswordChanged="PasswordBoxConfirm_OnPasswordChanged">
+                                        <PasswordBox.Style>
+                                            <Style TargetType="PasswordBox">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ShowPassword}" Value="True">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </PasswordBox.Style>
+                                    </PasswordBox>
+                                    <TextBox Text="{Binding ConfirmPassword, UpdateSourceTrigger=PropertyChanged}"
+                                             Padding="12,10"
+                                             FontSize="14"
+                                             BorderThickness="0"
+                                             Background="Transparent"
+                                             VerticalContentAlignment="Center">
+                                        <TextBox.Style>
+                                            <Style TargetType="TextBox">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ShowPassword}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                    </TextBox>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap"
+                                   FontFamily="Segoe UI, system-ui, sans-serif" FontSize="12" Foreground="#B91C1C"
+                                   Margin="2,12,2,0"/>
+
+                        <Button Margin="0,18,0,0" IsDefault="True"
+                                Command="{Binding ConfirmCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource PrimaryLoginButtonStyle}">
+                                    <Setter Property="Content" Value="Unlock"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSetupMode}" Value="True">
+                                            <Setter Property="Content" Value="Continue"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Border>
+
+                <Button HorizontalAlignment="Center" Margin="0,14,0,0" Content="Cancel"
+                        Command="{Binding CancelCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                        Style="{StaticResource CancelLinkButtonStyle}"/>
+
+                <Button HorizontalAlignment="Center" Margin="0,4,0,0" Content="Forgot master password?"
+                        Command="{Binding ForgotMasterPasswordCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource CancelLinkButtonStyle}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ShowPassword}" Value="True">
+                                <DataTrigger Binding="{Binding IsSetupMode}" Value="False">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TextBox.Style>
-                </TextBox>
-            </Grid>
-            <Button Grid.Column="1"
-                    Margin="8,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding ToggleShowPasswordCommand}"
-                    AutomationProperties.Name="Toggle password visibility">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource PasswordRevealIconButtonStyle}">
-                        <Setter Property="ToolTip" Value="Show password"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ShowPassword}" Value="True">
-                                <Setter Property="ToolTip" Value="Hide password"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Grid Width="22" Height="22">
-                    <!-- Eye: password obfuscated (click to reveal) -->
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ShowPassword}" Value="True">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <Viewbox Stretch="Uniform">
-                            <Canvas Width="24" Height="24">
-                                <Path Stroke="#2D2D2D" StrokeThickness="1.35" StrokeLineJoin="Round"
-                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent"
-                                      Data="M12,7 C8,7 4.8,9.4 3.3,12 C4.8,14.6 8,17 12,17 C16,17 19.2,14.6 20.7,12 C19.2,9.4 16,7 12,7 Z"/>
-                                <Ellipse Canvas.Left="9" Canvas.Top="9.3" Width="6" Height="6" Fill="#2D2D2D"/>
-                            </Canvas>
-                        </Viewbox>
-                    </Grid>
-                    <!-- Eye with slash: password visible (click to hide) -->
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ShowPassword}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <Viewbox Stretch="Uniform">
-                            <Canvas Width="24" Height="24">
-                                <Path Stroke="#2D2D2D" StrokeThickness="1.35" StrokeLineJoin="Round"
-                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent"
-                                      Data="M12,7 C8,7 4.8,9.4 3.3,12 C4.8,14.6 8,17 12,17 C16,17 19.2,14.6 20.7,12 C19.2,9.4 16,7 12,7 Z"/>
-                                <Ellipse Canvas.Left="9" Canvas.Top="9.3" Width="6" Height="6" Fill="#2D2D2D"/>
-                                <Path Stroke="#2D2D2D" StrokeThickness="1.85" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
-                                      Data="M5.5,5.5 L18.5,18.5"/>
-                            </Canvas>
-                        </Viewbox>
-                    </Grid>
-                </Grid>
-            </Button>
-        </Grid>
-
-        <TextBlock Grid.Row="6" Text="Confirm master password" FontWeight="SemiBold" FontSize="13"
-                   Visibility="{Binding IsSetupMode, Converter={StaticResource BoolToVis}}"/>
-
-        <Grid Grid.Row="8" Visibility="{Binding IsSetupMode, Converter={StaticResource BoolToVis}}">
-            <PasswordBox x:Name="PasswordBoxConfirm"
-                         Padding="8,6"
-                         FontSize="14"
-                         PasswordChanged="PasswordBoxConfirm_OnPasswordChanged">
-                <PasswordBox.Style>
-                    <Style TargetType="PasswordBox">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ShowPassword}" Value="True">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </PasswordBox.Style>
-            </PasswordBox>
-            <TextBox Text="{Binding ConfirmPassword, UpdateSourceTrigger=PropertyChanged}"
-                     Padding="8,6"
-                     FontSize="14"
-                     VerticalContentAlignment="Center">
-                <TextBox.Style>
-                    <Style TargetType="TextBox">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ShowPassword}" Value="True">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
-        </Grid>
-
-        <TextBlock Grid.Row="10" Text="{Binding ErrorMessage}" TextWrapping="Wrap" FontSize="12" Foreground="#B91C1C"/>
-
-        <StackPanel Grid.Row="12" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,0">
-            <Button Content="Cancel" Padding="16,8" Margin="0,0,8,0"
-                    Command="{Binding CancelCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-            <Button Content="OK" IsDefault="True" Padding="16,8"
-                    Command="{Binding ConfirmCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
-        </StackPanel>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

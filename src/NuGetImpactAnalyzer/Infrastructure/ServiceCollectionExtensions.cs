@@ -27,6 +27,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IMasterPasswordFileStore>(_ => new MasterPasswordFileStore(storage));
         services.AddSingleton<IStoredTokenRewrapper, WindowsCredentialTokenRewrapper>();
         services.AddSingleton<IMasterPasswordService, MasterPasswordService>();
+        services.AddSingleton<IVaultSecretsResetService, VaultSecretsResetService>();
         services.AddSingleton<ICredentialService, ProtectedCredentialService>();
         services.AddSingleton<IApplicationSessionController, ApplicationSessionController>();
 

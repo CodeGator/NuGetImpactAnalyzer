@@ -67,6 +67,32 @@ public sealed class MasterPasswordFileStoreTests : IDisposable
         Assert.Contains("corrupted", read.ErrorMessage, StringComparison.OrdinalIgnoreCase);
     }
 
+    [Fact]
+    public void TryDeleteFile_WhenMissing_ReturnsTrue()
+    {
+        var sut = new MasterPasswordFileStore(_dir);
+
+        Assert.True(sut.TryDeleteFile(out var error));
+        Assert.Null(error);
+    }
+
+    [Fact]
+    public void TryDeleteFile_WhenPresent_RemovesFile()
+    {
+        var sut = new MasterPasswordFileStore(_dir);
+        var data = new MasterPasswordFileData
+        {
+            PasswordSalt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16)),
+            PasswordHash = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32)),
+            KeySalt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16)),
+        };
+        sut.Write(data);
+
+        Assert.True(sut.TryDeleteFile(out var error), error);
+        Assert.Null(error);
+        Assert.False(sut.FileExists);
+    }
+
     public void Dispose()
     {
         try

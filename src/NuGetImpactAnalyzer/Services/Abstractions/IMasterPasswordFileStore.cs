@@ -10,4 +10,8 @@ public interface IMasterPasswordFileStore
     MasterPasswordReadResult TryRead();
 
     void Write(MasterPasswordFileData data);
+
+    /// <summary>Deletes the persisted master-password file if it exists.</summary>
+    /// <returns>False when the file exists but could not be deleted.</returns>
+    bool TryDeleteFile(out string? error);
 }
