@@ -1,3 +1,4 @@
+using System.IO;
 using NuGetImpactAnalyzer.Infrastructure;
 using NuGetImpactAnalyzer.Models;
 using NuGetImpactAnalyzer.Services.Abstractions;
@@ -24,7 +25,11 @@ public sealed class DialogViewModelFactoryTests
 
     private sealed class NoOpGitService : IGitService
     {
+        public string GetRepositoriesRoot() => Path.GetTempPath();
+
         public string GetLocalRepositoryPath(Repo repo) => "";
+
+        public bool IsLocalClonePresent(Repo repo) => false;
 
         public string? TryGetHeadCommitSha(string localRepositoryPath) => null;
 

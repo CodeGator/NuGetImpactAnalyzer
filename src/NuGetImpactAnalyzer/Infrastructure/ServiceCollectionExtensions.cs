@@ -60,14 +60,26 @@ public static class ServiceCollectionExtensions
 
         services.AddTransient<IRepositoryListConfigurationSynchronizer, RepositoryListConfigurationSynchronizer>();
         services.AddTransient<RepositoryWorkspaceViewModel>();
-        services.AddTransient<RepositorySyncViewModel>();
         services.AddTransient<DependencyGraphViewModel>();
         services.AddTransient<ImpactBuildOrderViewModel>();
         services.AddTransient<ImpactAnalysisViewModel>();
         services.AddTransient<LoginViewModel>();
         services.AddTransient<LoginWindow>();
 
-        services.AddTransient<MainViewModel>();
+        // One workspace instance must back both the bound grid (MainViewModel.Workspace) and sync commands
+        // (RepositorySyncViewModel); transient per-parameter resolution would create two unrelated workspaces.
+        services.AddTransient<MainViewModel>(sp =>
+        {
+            var workspace = ActivatorUtilities.CreateInstance<RepositoryWorkspaceViewModel>(sp);
+            var sync = ActivatorUtilities.CreateInstance<RepositorySyncViewModel>(sp, workspace);
+            var graph = sp.GetRequiredService<DependencyGraphViewModel>();
+            var impact = sp.GetRequiredService<ImpactAnalysisViewModel>();
+            var log = sp.GetRequiredService<ApplicationLogViewModel>();
+            var statusBar = sp.GetRequiredService<StatusBarViewModel>();
+            var master = sp.GetRequiredService<IMasterPasswordService>();
+            var session = sp.GetRequiredService<IApplicationSessionController>();
+            return new MainViewModel(workspace, sync, graph, impact, log, statusBar, master, session);
+        });
         services.AddTransient<MainWindow>();
 
         return services;

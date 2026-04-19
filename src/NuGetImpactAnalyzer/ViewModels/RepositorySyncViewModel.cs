@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -19,6 +20,9 @@ public partial class RepositorySyncViewModel : ObservableObject
     private readonly IApplicationLog _log;
     private readonly IClock _clock;
     private readonly IApplicationStatus _status;
+
+    /// <summary>Repository catalog bound to the main shell; must be the same instance as <see cref="MainViewModel.Workspace"/>.</summary>
+    public RepositoryWorkspaceViewModel Workspace => _workspace;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SyncReposCommand))]
@@ -75,6 +79,7 @@ public partial class RepositorySyncViewModel : ObservableObject
         {
             IsSyncingRepositories = false;
             SyncUiEnabled = true;
+            _workspace.RefreshLocalCloneFlags();
         }
     }
 
@@ -148,8 +153,25 @@ public partial class RepositorySyncViewModel : ObservableObject
         {
             IsClearingClones = false;
             SyncUiEnabled = true;
+            _workspace.RefreshLocalCloneFlags();
         }
     }
 
     private bool CanClearClones() => SyncUiEnabled;
+
+    [RelayCommand]
+    private void ExploreRepositoriesFolder()
+    {
+        var root = _git.GetRepositoriesRoot();
+        try
+        {
+            Directory.CreateDirectory(root);
+            Process.Start(new ProcessStartInfo(root) { UseShellExecute = true });
+        }
+        catch (Exception ex)
+        {
+            _log.AppendTimestampedLine(_clock, $"Could not open folder in Explorer: {ex.Message}");
+            _status.SetError($"Could not open folder: {ex.Message}");
+        }
+    }
 }

@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -76,6 +77,32 @@ public partial class RepositoryWorkspaceViewModel : ObservableObject
         _ = RefreshGitHubRepositoryMetadataAsync();
     }
 
+    /// <summary>
+    /// Updates <see cref="Repo.LocalCloneText"/> for each configured repository from disk and
+    /// refreshes <see cref="RepositoriesView"/> so the grid reflects changes (e.g. after sync or clear clones).
+    /// </summary>
+    public void RefreshLocalCloneFlags()
+    {
+        void Apply()
+        {
+            foreach (var r in Repositories)
+            {
+                r.LocalCloneText = _git.IsLocalClonePresent(r) ? "Yes" : "No";
+            }
+
+            _repositoriesView.Refresh();
+        }
+
+        var dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher is null || dispatcher.CheckAccess())
+        {
+            Apply();
+            return;
+        }
+
+        dispatcher.Invoke(Apply);
+    }
+
     partial void OnRepositorySearchTextChanged(string value)
     {
         _repositoriesView.Refresh();
@@ -100,6 +127,7 @@ public partial class RepositoryWorkspaceViewModel : ObservableObject
         Repositories.Add(draft);
         SelectedRepository = draft;
         RefreshStoredCredentialFlags();
+        RefreshLocalCloneFlags();
         _ = RefreshGitHubRepositoryMetadataAsync();
     }
 
@@ -123,6 +151,7 @@ public partial class RepositoryWorkspaceViewModel : ObservableObject
         }
 
         Repositories.Remove(repo);
+        RefreshLocalCloneFlags();
 
         if (wasSelected)
         {
@@ -187,6 +216,7 @@ public partial class RepositoryWorkspaceViewModel : ObservableObject
             RefreshStoredCredentialFlags,
             url => IsRepositoryUrlUsedByAnother(url, repo));
         RefreshStoredCredentialFlags();
+        RefreshLocalCloneFlags();
         EnsureSelectedRepositoryInView();
         _ = RefreshGitHubRepositoryMetadataAsync();
     }
@@ -204,6 +234,8 @@ public partial class RepositoryWorkspaceViewModel : ObservableObject
                 _log.AppendLine(line);
             }
         });
+
+        RefreshLocalCloneFlags();
     }
 
     private void RefreshStoredCredentialFlags()

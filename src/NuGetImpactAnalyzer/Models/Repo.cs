@@ -37,4 +37,11 @@ public partial class Repo : ObservableObject
     [ObservableProperty]
     [property: JsonIgnore]
     private bool _hasStoredCredentials;
+
+    /// <summary>
+    /// Display text for whether a valid local clone exists ("Yes" / "No"). Not persisted.
+    /// </summary>
+    [ObservableProperty]
+    [property: JsonIgnore]
+    private string _localCloneText = "No";
 }

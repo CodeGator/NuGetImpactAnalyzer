@@ -58,8 +58,12 @@ public sealed class GraphServiceTests : IDisposable
         /// <summary>When set, <see cref="GetLocalRepositoryPath"/> returns this for every repo (for analysis-scope tests).</summary>
         public string? LocalRepositoryRoot { get; init; }
 
+        public string GetRepositoriesRoot() => Path.GetTempPath();
+
         public string GetLocalRepositoryPath(Repo repo) =>
             LocalRepositoryRoot ?? Path.Combine(Path.GetTempPath(), "nuget-impact-graph-fake-" + repo.Name);
+
+        public bool IsLocalClonePresent(Repo repo) => Directory.Exists(GetLocalRepositoryPath(repo));
 
         public string? TryGetHeadCommitSha(string localRepositoryPath) => null;
 

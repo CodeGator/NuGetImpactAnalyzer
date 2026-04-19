@@ -179,6 +179,9 @@ public sealed class GitService : IGitService
     }
 
     /// <inheritdoc />
+    public string GetRepositoriesRoot() => _dataRoot;
+
+    /// <inheritdoc />
     public string? TryGetHeadCommitSha(string localRepositoryPath)
     {
         try
@@ -199,6 +202,20 @@ public sealed class GitService : IGitService
 
     /// <inheritdoc />
     public string GetLocalRepositoryPath(Repo repo) => GetLocalRepoPath(repo);
+
+    /// <inheritdoc />
+    public bool IsLocalClonePresent(Repo repo)
+    {
+        try
+        {
+            var path = GetLocalRepoPath(repo);
+            return Directory.Exists(path) && Repository.IsValid(path);
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
     private string GetLocalRepoPath(Repo repo)
     {

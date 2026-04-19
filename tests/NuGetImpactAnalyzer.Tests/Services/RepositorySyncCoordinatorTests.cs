@@ -15,8 +15,12 @@ public sealed class RepositorySyncCoordinatorTests
         public CancellationToken? CapturedCancellationToken { get; private set; }
         public Exception? ThrowOnSync { get; init; }
 
+        public string GetRepositoriesRoot() => Path.Combine(Path.GetTempPath(), "fake-git");
+
         public string GetLocalRepositoryPath(Repo repo) =>
             Path.Combine(Path.GetTempPath(), "fake-git", repo.Name);
+
+        public bool IsLocalClonePresent(Repo repo) => Directory.Exists(GetLocalRepositoryPath(repo));
 
         public Task CloneOrUpdateAsync(Repo repo, IProgress<string>? progress = null, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;

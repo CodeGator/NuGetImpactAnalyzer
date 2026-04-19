@@ -1,3 +1,4 @@
+using LibGit2Sharp;
 using NuGetImpactAnalyzer.Models;
 using NuGetImpactAnalyzer.Services;
 using NuGetImpactAnalyzer.Services.Abstractions;
@@ -76,6 +77,40 @@ public sealed class GitServiceTests
         var sut = new GitService(dataRoot, new NullCredentialService());
 
         Assert.Null(sut.TryGetHeadCommitSha(path!));
+    }
+
+    [Fact]
+    public void IsLocalClonePresent_WhenCloneMissing_ReturnsFalse()
+    {
+        var dataRoot = Path.Combine(Path.GetTempPath(), "nuget-git-present-" + Guid.NewGuid().ToString("N"));
+        var sut = new GitService(dataRoot, new NullCredentialService());
+        var repo = new Repo { Name = "Missing", Url = "https://example.com/x.git", Branch = "main" };
+
+        Assert.False(sut.IsLocalClonePresent(repo));
+    }
+
+    [Fact]
+    public void IsLocalClonePresent_WhenFolderExistsButNotARepository_ReturnsFalse()
+    {
+        var dataRoot = Path.Combine(Path.GetTempPath(), "nuget-git-present-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dataRoot);
+        var sut = new GitService(dataRoot, new NullCredentialService());
+        var repo = new Repo { Name = "NotGit", Url = "https://example.com/x.git", Branch = "main" };
+        Directory.CreateDirectory(sut.GetLocalRepositoryPath(repo));
+
+        Assert.False(sut.IsLocalClonePresent(repo));
+    }
+
+    [Fact]
+    public void IsLocalClonePresent_WhenValidGitRepository_ReturnsTrue()
+    {
+        var dataRoot = Path.Combine(Path.GetTempPath(), "nuget-git-present-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dataRoot);
+        var sut = new GitService(dataRoot, new NullCredentialService());
+        var repo = new Repo { Name = "HasGit", Url = "https://example.com/x.git", Branch = "main" };
+        Repository.Init(sut.GetLocalRepositoryPath(repo));
+
+        Assert.True(sut.IsLocalClonePresent(repo));
     }
 
     [Fact]

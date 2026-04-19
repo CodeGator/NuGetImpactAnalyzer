@@ -84,6 +84,9 @@
                                      Padding="4"/>
                         </ScrollViewer>
                     </TabItem>
+                    <TabItem Header="Graph">
+                        <views:DependencyGraphDiagramView DataContext="{Binding Graph}"/>
+                    </TabItem>
                 </TabControl>
             </DockPanel>
         </Border>
@@ -153,6 +156,7 @@
                                 <Button Content="Add" Command="{Binding Workspace.AddRepositoryCommand}" Margin="0,0,8,6"/>
                                 <Button Content="Sync repos" Command="{Binding Sync.SyncReposCommand}" Margin="0,0,8,6"/>
                                 <Button Content="Clear clones" Command="{Binding Sync.ClearClonesCommand}" Margin="0,0,8,6"/>
+                                <Button Content="Explore" Command="{Binding Sync.ExploreRepositoriesFolderCommand}" Margin="0,0,8,6"/>
                             </WrapPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,4,0,0" Visibility="{Binding Sync.IsSyncingRepositories, Converter={StaticResource BoolToVis}}">
                                 <ProgressBar Width="18" Height="18" IsIndeterminate="True" Margin="0,0,8,0"/>
@@ -180,6 +184,7 @@
                                   HeadersVisibility="Column"
                                   SelectionMode="Single"
                                   IsReadOnly="True"
+                                  EnableRowVirtualization="False"
                                   SelectionChanged="SettingsRepositoriesGrid_SelectionChanged"
                                   GridLinesVisibility="Horizontal"
                                   BorderThickness="0"
@@ -242,6 +247,31 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
+                                <DataGridTemplateColumn Header="Local" Width="72" MinWidth="64">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding LocalCloneText, Mode=OneWay}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="#1D1D1F"/>
+                                                        <Style.Triggers>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding GitHubIsPrivate}" Value="True"/>
+                                                                    <Condition Binding="{Binding HasStoredCredentials}" Value="False"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter Property="Foreground" Value="#EA580C"/>
+                                                            </MultiDataTrigger>
+                                                            <DataTrigger Binding="{Binding HasStoredCredentials}" Value="True">
+                                                                <Setter Property="Foreground" Value="#EA580C"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="" Width="Auto" MinWidth="220">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

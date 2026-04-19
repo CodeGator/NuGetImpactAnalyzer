@@ -33,7 +33,11 @@ public sealed class ParsingServiceTests : IDisposable
     {
         public required string Root { get; init; }
 
+        public string GetRepositoriesRoot() => Root;
+
         public string GetLocalRepositoryPath(Repo repo) => Root;
+
+        public bool IsLocalClonePresent(Repo repo) => Directory.Exists(GetLocalRepositoryPath(repo));
 
         public Task CloneOrUpdateAsync(Repo repo, IProgress<string>? progress = null, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;

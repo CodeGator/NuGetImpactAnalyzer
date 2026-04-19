@@ -5,9 +5,19 @@ namespace NuGetImpactAnalyzer.Services.Abstractions;
 public interface IGitService
 {
     /// <summary>
+    /// Absolute path to the root folder that holds per-repository clone directories (typically under Data/repos).
+    /// </summary>
+    string GetRepositoriesRoot();
+
+    /// <summary>
     /// Absolute path to the local clone directory for this repository (typically under Data/).
     /// </summary>
     string GetLocalRepositoryPath(Repo repo);
+
+    /// <summary>
+    /// Returns whether a valid local Git repository exists at <see cref="GetLocalRepositoryPath"/>.
+    /// </summary>
+    bool IsLocalClonePresent(Repo repo);
 
     /// <summary>
     /// Returns the current HEAD commit SHA for a valid local repository, or null if missing or empty.

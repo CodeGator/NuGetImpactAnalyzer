@@ -73,6 +73,17 @@ public sealed class ServiceCollectionExtensionsTests
     }
 
     [Fact]
+    public void AddNuGetImpactAnalyzerServices_MainViewModelSyncUsesSameWorkspaceAsShell()
+    {
+        var services = new ServiceCollection();
+        services.AddNuGetImpactAnalyzerServices();
+        using var provider = services.BuildServiceProvider();
+
+        var main = provider.GetRequiredService<MainViewModel>();
+        Assert.Same(main.Workspace, main.Sync.Workspace);
+    }
+
+    [Fact]
     public void AddNuGetImpactAnalyzerServices_IRepositoryCredentialsDialogLauncher_IsDialogServiceInstance()
     {
         var services = new ServiceCollection();
