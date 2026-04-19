@@ -15,14 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CodeGator.Wpf" Version="1.1.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="LibGit2Sharp" Version="0.31.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.6" />
     <PackageReference Include="NuGet.Versioning" Version="7.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Packages\CodeGator.Wpf - main\src\CodeGator.Wpf\CodeGator.Wpf.csproj" />
   </ItemGroup>
 
   <ItemGroup>
